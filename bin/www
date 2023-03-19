@@ -1,0 +1,26 @@
+const app = require('../src/app')
+const { Server } = require('socket.io')
+const http = require('http')
+const workOrderService = require('../src/app/work-order/work-order.service')
+
+function normalizePort (port) {
+  if (typeof port === 'string') return +port
+}
+
+const port = normalizePort(process.env.NODE_PORT || '3000')
+app.set('port', port)
+const httpServer = http.createServer(app)
+
+const io = new Server(httpServer)
+
+io.on('connection', (socket) => {
+  socket.on('vehicle1:location:update', async (data) => {
+    console.log('vehicle1:location:update: ', data)
+    const result = await workOrderService.isNearWorkOrderPoints([data.lat, data.long])
+    console.log('near:: ', result)
+  })
+})
+
+httpServer.listen(port, () => {
+  console.log(`listening on *:${port}`)
+})
