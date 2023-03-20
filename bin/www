@@ -1,7 +1,7 @@
 const app = require('../src/app')
 const { Server } = require('socket.io')
 const http = require('http')
-const workOrderService = require('../src/app/work-order/work-order.service')
+const workOrderPointsService = require('../src/app/work-order/work-order-points/work-order-points.service')
 
 function normalizePort (port) {
   if (typeof port === 'string') return +port
@@ -15,9 +15,9 @@ const io = new Server(httpServer)
 
 io.on('connection', (socket) => {
   socket.on('vehicle1:location:update', async (data) => {
-    console.log('vehicle1:location:update: ', data)
-    const result = await workOrderService.isNearWorkOrderPoints([data.lat, data.long])
-    console.log('near:: ', result)
+    const result = await workOrderPointsService.isNearWorkOrderPoints([data.long, data.lat])
+    if (result.length) console.log(`You're ${result[0].distance} away from the nearest point`)
+    else console.log('You\'re not followin the check-points')
   })
 })
 

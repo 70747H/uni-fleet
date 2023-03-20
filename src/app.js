@@ -8,6 +8,7 @@ const vehicleRouter = require('./app/vehicle/vehicle.routes')
 const operatorRouter = require('./app/operator/operator.routes')
 const workOrderRouter = require('./app/work-order/work-order.routes')
 const generalErrorMiddleware = require('./middleware/general-error.middlware')
+const mongooseErrorMiddleware = require('./middleware/mongoose-error.middleware')
 
 const app = express()
 
@@ -23,6 +24,7 @@ app.use('/vehicle', vehicleRouter)
 app.use('/operator', operatorRouter)
 app.use('/work-order', workOrderRouter)
 
+app.use(mongooseErrorMiddleware)
 app.use(generalErrorMiddleware)
 
 module.exports = app

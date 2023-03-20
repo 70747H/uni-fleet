@@ -1,4 +1,6 @@
+const db = require('../../db.config')
 const workOrderService = require('./work-order.service')
+const workOrderPointsService = require('./work-order-points/work-order-points.service')
 
 class WorkOrderController {
   constructor () {}
@@ -13,10 +15,13 @@ class WorkOrderController {
     }
   }
 
-  create (req, res, next) {
+  async create (req, res, next) {
     try {
       const { body } = req
-      res.send(workOrderService.create(body))
+      const { checkPoints, ...rest } = body
+      const createdWorkOrder = await workOrderService.create(rest)
+      await workOrderPointsService.bulkCreate(createdWorkOrder.id, rest.driver, checkPoints)
+      res.status(201).send()
     } catch (error) {
       next(error)
     }

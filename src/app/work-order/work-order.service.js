@@ -29,23 +29,6 @@ class WorkOrderService {
   delete (id) {
     return WorkOrderModel.deleteOne({ _id: id })
   }
-
-  isNearWorkOrderPoints (data) {
-    return WorkOrderModel.aggregate(
-      [
-        {
-          $geoNear: {
-            near: {
-              type: 'Point',
-              coordinates: data
-            },
-            distanceField: 'ditance',
-            maxDistance: 150
-          }
-        }
-      ]
-    )
-  }
 }
 
 module.exports = new WorkOrderService()
