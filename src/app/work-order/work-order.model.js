@@ -7,22 +7,15 @@ const WorkOrderSchema = new mongoose.Schema({
     required: true
   },
   checkPoints: {
-    type: [
-      {
-        type: { type: String, default: 'Point' },
-        coordinates: {
-          type: [Number],
-          required: true
-        }
-      }
-    ]
+    type: { type: String, enum: ['MultiPoint'], default: 'MultiPoint', required: true },
+    coordinates: { type: [[Number]], required: true }
   },
   driver: { type: Schema.Types.ObjectId, ref: 'users' }
 }, {
   autoIndex: true
 })
 
-WorkOrderSchema.index({ 'checkPoints.coordinates': '2dsphere' })
+WorkOrderSchema.index({ checkPoints: '2dsphere' })
 
 const WorkOrder = mongoose.model('workOrders', WorkOrderSchema)
 

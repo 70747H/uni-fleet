@@ -21,9 +21,11 @@ class WorkOrderService {
 
   update (found, data) {
     const { checkPoints, ...rest } = data
-    Object.assign(found, rest)
-    if (checkPoints) found.checkPoints = data.checkPoints ? Object.assign(found.checkPoints, data.checkPoints) : found.checkPoints
-    return found.save()
+    const updateObject = {
+      rest
+    }
+    if (checkPoints.length) updateObject.$addToSet = { checkPoints: { $each: checkPoints } }
+    return WorkOrderModel.updateOne({ _id: found.id }, updateObject)
   }
 
   delete (id) {
