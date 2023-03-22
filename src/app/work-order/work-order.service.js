@@ -1,10 +1,21 @@
+const mongoose = require('mongoose')
 const WorkOrderModel = require('./work-order.model')
 
 class WorkOrderService {
   constructor () {}
 
-  list () {
-    return WorkOrderModel.find().populate('driver')
+  list (filter) {
+    const whereObj = {}
+    const { driver, startDate, populate } = filter
+
+    if (driver) whereObj.driver = new mongoose.Types.ObjectId(driver)
+    if (startDate) whereObj.startDate = startDate
+
+    const query = WorkOrderModel.find(whereObj)
+
+    if (populate) query.populate(populate)
+
+    return query.exec()
   }
 
   create (data) {
@@ -19,11 +30,8 @@ class WorkOrderService {
     return WorkOrderModel.findOne(filter)
   }
 
-  update (found, data) {
-    const { checkPoints, ...rest } = data
-    Object.assign(found, rest)
-    if (checkPoints) found.checkPoints = data.checkPoints ? Object.assign(found.checkPoints, data.checkPoints) : found.checkPoints
-    return found.save()
+  update (id, data) {
+    return WorkOrderModel.updateOne({ _id: id }, data)
   }
 
   delete (id) {

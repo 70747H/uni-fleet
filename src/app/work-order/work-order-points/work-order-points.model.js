@@ -16,6 +16,6 @@ const WorkOrderPointsSchema = new mongoose.Schema({
 
 WorkOrderPointsSchema.index({ location: '2dsphere' })
 
-const WorkOrderPoints = mongoose.model('workOrderPoints', WorkOrderPointsSchema)
+const WorkOrderPoints = mongoose.model('workorderpoints', WorkOrderPointsSchema)
 
 module.exports = WorkOrderPoints

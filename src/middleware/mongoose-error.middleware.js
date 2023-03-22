@@ -52,8 +52,12 @@ module.exports = (err, req, res, next) => {
   // }
 
   if (err instanceof MongoServerError) {
-    console.log(err.code)
-    next()
+    if (err.code === 11000) {
+      const regex = /\.\S*/gm
+      const m = regex.exec(err.message)[0].substring(1)
+      const field = Object.keys(err.keyValue)
+      next(new Error(`A ${m} with that ${field} already exists.`))
+    } else next(err)
   }
   next(err)
 }

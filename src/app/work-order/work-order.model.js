@@ -1,11 +1,16 @@
 const mongoose = require('mongoose')
 const { Schema } = mongoose
 
-const WorkOrderPointsSchema = new mongoose.Schema({
+const WorkOrderSchema = new mongoose.Schema({
   name: { type: String, unique: true, required: true },
-  driver: { type: Schema.Types.ObjectId, ref: 'users' }
+  driver: { type: Schema.Types.ObjectId, ref: 'users', required: true },
+  vehicle: { type: Schema.Types.ObjectId, ref: 'vehicles', required: true },
+  startDate: { type: String, required: true },
+  startedOn: { type: Date },
+  endedOn: { type: Date },
+  status: { type: String, enum: ['started', 'ended', 'idle'], default: 'idle' }
 })
 
-const WorkOrderPoints = mongoose.model('workOrders', WorkOrderPointsSchema)
+const WorkOrder = mongoose.model('workorders', WorkOrderSchema)
 
-module.exports = WorkOrderPoints
+module.exports = WorkOrder

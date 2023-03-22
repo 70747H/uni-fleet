@@ -11,11 +11,10 @@ class WorkOrderPointsService {
     return WorkOrderPointsModel.create(data)
   }
 
-  bulkCreate (id, driver, data) {
+  bulkCreate (workOrder, data) {
     const mappedData = data.map(item => {
       return {
-        workeOrder: id,
-        driver,
+        workOrder,
         location: {
           coordinates: item
         }
@@ -32,11 +31,8 @@ class WorkOrderPointsService {
     return WorkOrderPointsModel.findOne(filter)
   }
 
-  update (found, data) {
-    const { checkPoints, ...rest } = data
-    Object.assign(found, rest)
-    if (checkPoints) found.checkPoints = data.checkPoints ? Object.assign(found.checkPoints, data.checkPoints) : found.checkPoints
-    return found.save()
+  update (id, data) {
+    return WorkOrderPointsModel.updateOne({ _id: id }, data)
   }
 
   delete (id) {

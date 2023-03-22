@@ -1,4 +1,3 @@
-const db = require('../../db.config')
 const workOrderService = require('./work-order.service')
 const workOrderPointsService = require('./work-order-points/work-order-points.service')
 
@@ -7,7 +6,8 @@ class WorkOrderController {
 
   async list (req, res, next) {
     try {
-      const data = await workOrderService.list()
+      const { query } = req
+      const data = await workOrderService.list(query)
       res.send(data)
     } catch (error) {
       console.log('err:: ', error)
@@ -20,7 +20,7 @@ class WorkOrderController {
       const { body } = req
       const { checkPoints, ...rest } = body
       const createdWorkOrder = await workOrderService.create(rest)
-      await workOrderPointsService.bulkCreate(createdWorkOrder.id, rest.driver, checkPoints)
+      await workOrderPointsService.bulkCreate(createdWorkOrder, checkPoints)
       res.status(201).send()
     } catch (error) {
       next(error)
@@ -49,7 +49,8 @@ class WorkOrderController {
       if (!foundWorkOrder) {
         throw new Error('WorkOrder not found')
       }
-      await workOrderService.update(foundWorkOrder, body)
+      await workOrderService.update(foundWorkOrder.id, body)
+
       res.status(200).send()
     } catch (error) {
       console.log('err:: ', error)
