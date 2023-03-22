@@ -20,7 +20,8 @@ class WorkOrderController {
       const { body } = req
       const { checkPoints, ...rest } = body
       const createdWorkOrder = await workOrderService.create(rest)
-      await workOrderPointsService.bulkCreate(createdWorkOrder, checkPoints)
+      const createdPoints = await workOrderPointsService.bulkCreate(createdWorkOrder, checkPoints)
+      await workOrderService.update(createdWorkOrder.id, { checkPoints: createdPoints })
       res.status(201).send()
     } catch (error) {
       next(error)

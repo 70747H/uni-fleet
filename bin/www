@@ -2,8 +2,8 @@ const app = require('../src/app')
 const http = require('http')
 const cluster = require('cluster')
 const numCPUs = require('os').cpus().length
-const { setupMaster, setupWorker } = require('@socket.io/sticky')
-const { createAdapter, setupPrimary } = require('@socket.io/cluster-adapter')
+const { setupMaster } = require('@socket.io/sticky')
+const { setupPrimary } = require('@socket.io/cluster-adapter')
 
 function normalizePort (port) {
   if (typeof port === 'string') return +port
@@ -35,8 +35,7 @@ if (cluster.isMaster) {
   const httpServer = http.createServer(app)
 
   const io = require('../src/sockets/index')(httpServer)
-  io.adapter(createAdapter())
-  setupWorker(io)
+
   httpServer.listen()
 }
 

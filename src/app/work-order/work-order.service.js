@@ -6,14 +6,12 @@ class WorkOrderService {
 
   list (filter) {
     const whereObj = {}
-    const { driver, startDate, populate } = filter
+    const { driver, startDate } = filter
 
     if (driver) whereObj.driver = new mongoose.Types.ObjectId(driver)
     if (startDate) whereObj.startDate = startDate
 
-    const query = WorkOrderModel.find(whereObj)
-
-    if (populate) query.populate(populate)
+    const query = WorkOrderModel.find(whereObj).populate('driver vehicle checkPoints')
 
     return query.exec()
   }
