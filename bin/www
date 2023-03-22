@@ -1,9 +1,9 @@
 const app = require('../src/app')
 const http = require('http')
-// const cluster = require('cluster')
-// const numCPUs = require('os').cpus().length
-// const { setupMaster, setupWorker } = require('@socket.io/sticky')
-// const { createAdapter, setupPrimary } = require('@socket.io/cluster-adapter')
+const cluster = require('cluster')
+const numCPUs = require('os').cpus().length
+const { setupMaster, setupWorker } = require('@socket.io/sticky')
+const { createAdapter, setupPrimary } = require('@socket.io/cluster-adapter')
 
 function normalizePort (port) {
   if (typeof port === 'string') return +port
@@ -11,40 +11,32 @@ function normalizePort (port) {
 
 const port = normalizePort(process.env.NODE_PORT)
 
-// if (cluster.isMaster) {
-//   console.log(`Master ${process.pid} is running`)
+if (cluster.isMaster) {
+  console.log(`Master ${process.pid} is running`)
 
-//   const httpServer = http.createServer(app)
+  const httpServer = http.createServer(app)
 
-//   setupMaster(httpServer, { loadBalancingMethod: 'least-connection' })
-//   setupPrimary({ serialization: 'advanced' })
+  setupMaster(httpServer, { loadBalancingMethod: 'least-connection' })
+  setupPrimary({ serialization: 'advanced' })
 
-//   httpServer.listen(port, () => console.log(`listening on *:${port}`))
+  httpServer.listen(port, () => console.log(`listening on *:${port}`))
 
-//   for (let i = 0; i < numCPUs; i++) {
-//     cluster.fork()
-//   }
+  for (let i = 0; i < numCPUs; i++) {
+    cluster.fork()
+  }
 
-//   cluster.on('exit', (worker) => {
-//     console.log(`Worker ${worker.process.pid} died`)
-//     cluster.fork()
-//   })
-// } else {
-//   console.log(`Worker ${process.pid} started`)
+  cluster.on('exit', (worker) => {
+    console.log(`Worker ${worker.process.pid} died`)
+    cluster.fork()
+  })
+} else {
+  console.log(`Worker ${process.pid} started`)
 
-//   const httpServer = http.createServer(app)
+  const httpServer = http.createServer(app)
 
-//   const io = require('../src/sockets/index')(httpServer)
-//   io.adapter(createAdapter())
-//   setupWorker(io)
-//   httpServer.listen()
-// }
-app.set('port', port)
+  const io = require('../src/sockets/index')(httpServer)
+  io.adapter(createAdapter())
+  setupWorker(io)
+  httpServer.listen()
+}
 
-const httpServer = http.createServer(app)
-
-// require('../src/sockets/index')(httpServer)
-
-httpServer.listen(port, () => {
-  console.log(`listening on *:${port}`)
-})
