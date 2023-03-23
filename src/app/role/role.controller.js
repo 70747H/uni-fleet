@@ -1,0 +1,80 @@
+const bcrypt = require('bcrypt')
+const roleService = require('./role.service')
+
+class RoleController {
+  constructor () {}
+
+  async list (req, res, next) {
+    try {
+      const data = await roleService.list()
+      res.send(data)
+    } catch (error) {
+      console.log('err:: ', error)
+      next(error)
+    }
+  }
+
+  async create (req, res, next) {
+    try {
+      const { body } = req
+      const { name } = body
+
+      const foundRole = await roleService.getBy({ name })
+      if (foundRole) throw new Error('Role with same name exists')
+
+      roleService.create(body)
+
+      res.status(201).send()
+    } catch (error) {
+      console.log('err:: ', error.message)
+      next(error)
+    }
+  }
+
+  async get (req, res, next) {
+    try {
+      const { params: { id } } = req
+      const foundRole = await roleService.get(id)
+      if (!foundRole) {
+        throw new Error('Role not found')
+      }
+      res.send(foundRole)
+    } catch (error) {
+      console.log('err:: ', error)
+      next(error)
+    }
+  }
+
+  async update (req, res, next) {
+    try {
+      const { params: { id } } = req
+      const { body } = req
+      const foundRole = await roleService.get(id)
+      if (!foundRole) {
+        throw new Error('Role not found')
+      }
+      await roleService.update(foundRole, body)
+      res.status(200).send()
+    } catch (error) {
+      console.log('err:: ', error)
+      next(error)
+    }
+  }
+
+  async delete (req, res, next) {
+    try {
+      const { params: { id } } = req
+      const foundRole = await roleService.get(id)
+      if (!foundRole) {
+        throw new Error('Role not found')
+      }
+      await roleService.delete(id)
+      res.status(200).send()
+    } catch (error) {
+      console.log('err:: ', error)
+      next(error)
+    }
+  }
+}
+
+module.exports = new RoleController()

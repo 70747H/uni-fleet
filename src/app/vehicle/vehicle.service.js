@@ -4,7 +4,7 @@ class VehicleService {
   constructor () {}
 
   list () {
-    return vehicleModel.find()
+    return vehicleModel.find().populate('driver')
   }
 
   create (data) {
@@ -12,7 +12,7 @@ class VehicleService {
   }
 
   get (id) {
-    return vehicleModel.findById(id)
+    return vehicleModel.findById(id).populate('driver')
   }
 
   getBy (filter) {

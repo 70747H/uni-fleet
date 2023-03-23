@@ -10,7 +10,8 @@ const createSchema = Joi.object({
     lat: Joi.number().required(),
     long: Joi.number().required()
   }).required(),
-  type: Joi.string().default('driver')
+  type: Joi.string().default('driver'),
+  vehicle: Joi.string().hex().length(24).optional()
 }).unknown(false)
 
 const mongoIdSchema = Joi.object({
@@ -25,7 +26,8 @@ const updateSchema = Joi.object({
   address: Joi.object({
     lat: Joi.number().optional(),
     long: Joi.number().optional()
-  }).optional()
+  }).optional(),
+  vehicle: Joi.string().hex().length(24).optional()
 }).unknown(false)
 
 module.exports = {

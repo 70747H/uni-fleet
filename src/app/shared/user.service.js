@@ -4,7 +4,7 @@ class UserService {
   constructor () {}
 
   list () {
-    return userModel.find()
+    return userModel.find({ type: 'driver' }).populate('vehicle')
   }
 
   create (data) {
@@ -12,7 +12,7 @@ class UserService {
   }
 
   get (id) {
-    return userModel.findById(id)
+    return userModel.findById(id).populate('vehicle')
   }
 
   getBy (filter) {

@@ -21,7 +21,7 @@ class WorkOrderService {
   }
 
   get (id) {
-    return WorkOrderModel.findById(id)
+    return WorkOrderModel.findById(id).populate('driver vehicle checkPoints')
   }
 
   getBy (filter) {

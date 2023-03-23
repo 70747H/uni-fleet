@@ -8,7 +8,8 @@ const createSchema = Joi.object({
   color: Joi.string().required(),
   fuelType: Joi.string().required(),
   vin: Joi.string().required(),
-  license: Joi.string().required()
+  license: Joi.string().required(),
+  driver: Joi.string().hex().length(24).optional()
 }).unknown(false)
 
 const mongoIdSchema = Joi.object({
@@ -23,7 +24,8 @@ const updateSchema = Joi.object({
   color: Joi.string().optional(),
   fuelType: Joi.string().optional(),
   vin: Joi.string().optional(),
-  license: Joi.string().optional()
+  license: Joi.string().optional(),
+  driver: Joi.string().hex().length(24).optional()
 }).unknown(false)
 
 module.exports = {

@@ -18,7 +18,7 @@ class AuthController {
 
       const token = jwt.sign({ id: foundOperator.id }, process.env.TOKEN_SECRET, { expiresIn: process.env.TOKEN_TTL })
 
-      if (token) res.status(200).send(token)
+      if (token) res.status(200).json(token)
       else throw new Error('Couln\'t generate token, try again later')
     } catch (error) {
       console.log('err:: ', error)
