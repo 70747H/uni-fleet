@@ -11,7 +11,8 @@ const createSchema = Joi.object({
     long: Joi.number().required()
   }).required(),
   type: Joi.string().default('driver'),
-  vehicle: Joi.string().hex().length(24).optional()
+  vehicle: Joi.string().hex().length(24).optional(),
+  role: Joi.string().hex().length(24).optional()
 }).unknown(false)
 
 const mongoIdSchema = Joi.object({
@@ -27,7 +28,8 @@ const updateSchema = Joi.object({
     lat: Joi.number().optional(),
     long: Joi.number().optional()
   }).optional(),
-  vehicle: Joi.string().hex().length(24).optional()
+  vehicle: Joi.string().hex().length(24).optional(),
+  role: Joi.string().hex().length(24).optional()
 }).unknown(false)
 
 module.exports = {

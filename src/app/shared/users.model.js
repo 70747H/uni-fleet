@@ -10,6 +10,7 @@ const UserSchema = new mongoose.Schema({
   address: { type: { lat: { type: Number },  long: { type: Number }} },
   type: { type: String },
   vehicle: { type: Schema.Types.ObjectId, ref: 'vehicles' },
+  role: { type: Schema.Types.ObjectId, ref: 'roles' }
 })
 
 const User = mongoose.model('users', UserSchema)

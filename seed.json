@@ -1,0 +1,8 @@
+{
+  "roles": [
+    {"name":"OPERATOR","permissions":["GET_driver","POST_driver","GET_driver/:id","PATCH_driver/:id","DELETE_driver/:id"]}
+  ],
+  "users": [
+    {"name":"ahmed","email":"ahmed@uni.com","password":"$2b$10$KeRnpuJjvW7zSB3QVQ1FN.IBqI0S2ZEedSWJUyi6U70IzED4InkNa","age":{"$numberInt":"28"},"mobile":"+201074564562","address":{"lat":{"$numberInt":"123"},"long":{"$numberInt":"456"},"_id":{"$oid":"6420cf7afd48598ad7f5063e"}},"type":"driver","__v":{"$numberInt":"0"},"role":{"$oid":"6420c9ff73245fd3d60fe2dc"}}
+  ]
+}

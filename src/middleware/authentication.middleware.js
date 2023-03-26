@@ -10,7 +10,7 @@ module.exports = (req, res, next) => {
     if (token == null) return res.sendStatus(401)
 
     let decoded = jwt.verify(token, process.env.TOKEN_SECRET)
-    req.user = decoded
+    req.user = decoded.id
     next()
   } catch (err) {
     next(err)
