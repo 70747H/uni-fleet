@@ -1,10 +1,12 @@
+'use strict'
+
 const userModel = require('./users.model')
 
 class UserService {
   constructor () {}
 
-  list () {
-    return userModel.find({ type: 'driver' }).populate('vehicle')
+  list (filter) {
+    return userModel.find({ type: 'operator' }).populate('vehicle role').populate({ path: 'workOrder', populate: { path: 'checkPoints' } })
   }
 
   create (data) {
@@ -12,7 +14,7 @@ class UserService {
   }
 
   get (id) {
-    return userModel.findById(id).populate('vehicle')
+    return userModel.findById(id).populate('vehicle role').populate({ path: 'workOrder', populate: { path: 'checkPoints' } })
   }
 
   getBy (filter) {
@@ -21,16 +23,6 @@ class UserService {
 
   update (found, data) {
     const { address } = data
-    // Object.assign(found, rest)
-    // if (address) found.address = data.address ? Object.assign(found.address, data.address) : found.address
-    // return found.save()
-
-    // const { address, ...rest } = data
-    // const updateObject = { ...rest }
-    // if (address) {
-    //   if (address.lat) updateObject['$set'] = { 'address.lat': address.lat }
-    //   if (address.long) updateObject['$set'] = { 'address.long': address.long }
-    // }
     if (address) data.address = { ...address, ...found.address }
     return userModel.updateOne({ _id: found.id }, { $set: data })
   }

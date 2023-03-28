@@ -1,3 +1,5 @@
+'use strict'
+
 const vehicleModel = require('./vehicle.model')
 
 class VehicleService {

@@ -1,5 +1,9 @@
+'use strict'
+
 const bcrypt = require('bcrypt')
 const operatorService = require('../shared/user.service')
+const NotFoundError = require('../../error/not-found.error')
+const BadRequestError = require('../../error/bad-request.error')
 
 class OperatorController {
   constructor () {}
@@ -9,7 +13,6 @@ class OperatorController {
       const data = await operatorService.list()
       res.send(data)
     } catch (error) {
-      console.log('err:: ', error)
       next(error)
     }
   }
@@ -20,7 +23,7 @@ class OperatorController {
       const { email, password } = body
 
       const foundOperator = await operatorService.getBy({ email })
-      if (foundOperator) throw new Error('Operator with same email exists')
+      if (foundOperator) throw new BadRequestError(`Operator with same email: ${email} exists`)
 
       bcrypt.hash(password, 10).then(function (hash) {
         body.password = hash
@@ -29,7 +32,6 @@ class OperatorController {
 
       res.status(201).send()
     } catch (error) {
-      console.log('err:: ', error.message)
       next(error)
     }
   }
@@ -39,11 +41,10 @@ class OperatorController {
       const { params: { id } } = req
       const foundOperator = await operatorService.get(id)
       if (!foundOperator) {
-        throw new Error('Operator not found')
+        throw new NotFoundError(`Operator with id: ${id} not found.`)
       }
       res.send(foundOperator)
     } catch (error) {
-      console.log('err:: ', error)
       next(error)
     }
   }
@@ -54,12 +55,11 @@ class OperatorController {
       const { body } = req
       const foundOperator = await operatorService.get(id)
       if (!foundOperator) {
-        throw new Error('Operator not found')
+        throw new NotFoundError(`Operator with id: ${id} not found.`)
       }
       await operatorService.update(foundOperator, body)
       res.status(200).send()
     } catch (error) {
-      console.log('err:: ', error)
       next(error)
     }
   }
@@ -69,12 +69,11 @@ class OperatorController {
       const { params: { id } } = req
       const foundOperator = await operatorService.get(id)
       if (!foundOperator) {
-        throw new Error('Operator not found')
+        throw new NotFoundError(`Operator with id: ${id} not found.`)
       }
       await operatorService.delete(id)
       res.status(200).send()
     } catch (error) {
-      console.log('err:: ', error)
       next(error)
     }
   }

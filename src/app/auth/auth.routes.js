@@ -1,3 +1,5 @@
+'use strict'
+
 const Router = require('express').Router
 const isValidData = require('../../middleware/validation.middleware')
 const checkApiKey = require('../../middleware/api-key.middleware')

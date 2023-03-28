@@ -1,5 +1,8 @@
+'use strict'
+
 const workOrderService = require('./work-order.service')
 const workOrderPointsService = require('./work-order-points/work-order-points.service')
+const NotFoundError = require('../../error/not-found.error')
 
 class WorkOrderController {
   constructor () {}
@@ -10,7 +13,6 @@ class WorkOrderController {
       const data = await workOrderService.list(query)
       res.send(data)
     } catch (error) {
-      console.log('err:: ', error)
       next(error)
     }
   }
@@ -33,11 +35,10 @@ class WorkOrderController {
       const { params: { id } } = req
       const foundWorkOrder = await workOrderService.get(id)
       if (!foundWorkOrder) {
-        throw new Error('WorkOrder not found')
+        throw new NotFoundError(`WorkOrder with id: ${id} not found`)
       }
       res.send(foundWorkOrder)
     } catch (error) {
-      console.log('err:: ', error)
       next(error)
     }
   }
@@ -48,13 +49,12 @@ class WorkOrderController {
       const { body } = req
       const foundWorkOrder = await workOrderService.get(id)
       if (!foundWorkOrder) {
-        throw new Error('WorkOrder not found')
+        throw NotFoundError(`WorkOrder with id: ${id} not found`)
       }
       await workOrderService.update(foundWorkOrder.id, body)
 
       res.status(200).send()
     } catch (error) {
-      console.log('err:: ', error)
       next(error)
     }
   }
@@ -64,12 +64,11 @@ class WorkOrderController {
       const { params: { id } } = req
       const foundWorkOrder = await workOrderService.get(id)
       if (!foundWorkOrder) {
-        throw new Error('WorkOrder not found')
+        throw new NotFoundError(`WorkOrder with id: ${id} not found`)
       }
       await workOrderService.delete(id)
       res.status(200).send()
     } catch (error) {
-      console.log('err:: ', error)
       next(error)
     }
   }

@@ -1,5 +1,8 @@
+'use strict'
+
 require('dotenv').config()
 const express = require('express')
+const helmet = require('helmet')
 const cors = require('cors')
 const morgan = require('morgan')
 const bodyParser = require('body-parser')
@@ -14,10 +17,12 @@ const mongooseErrorMiddleware = require('./middleware/mongoose-error.middleware'
 
 const app = express()
 
+app.use(helmet())
+app.disable('x-powered-by')
 app.use(cors({ origin: '*' }))
 app.use(morgan('tiny'))
 app.use(express.json())
-app.use(bodyParser.urlencoded({ extended: true }))
+app.use(bodyParser.urlencoded({ extended: true, limit: '100kb', parameterLimit: 10 }))
 
 require('./db.config')
 

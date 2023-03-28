@@ -1,3 +1,5 @@
+'use strict'
+
 const RoleModel = require('./role.model')
 
 class RoleService {

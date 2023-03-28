@@ -7,9 +7,9 @@ module.exports = (req, res, next) => {
 
     if (!authHeader) return res.sendStatus(403)
     const token = authHeader.split(' ')[1]
-    if (token == null) return res.sendStatus(401)
+    if (!token) return res.sendStatus(401)
 
-    let decoded = jwt.verify(token, process.env.TOKEN_SECRET)
+    const decoded = jwt.verify(token, process.env.TOKEN_SECRET)
     req.user = decoded.id
     next()
   } catch (err) {

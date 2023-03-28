@@ -1,4 +1,8 @@
+'use strict'
+
 const vehicleService = require('./vehicle.service')
+const NotFoundError = require('../../error/not-found.error')
+const BadRequestError = require('../../error/bad-request.error')
 
 class VehicleController {
   constructor () {}
@@ -19,7 +23,7 @@ class VehicleController {
       const { vin } = body
 
       const foundVehicle = await vehicleService.getBy({ vin })
-      if (foundVehicle) throw new Error('Vehicle with same vin exists')
+      if (foundVehicle) throw new BadRequestError(`Vehicle with same vin: ${vin} exists`)
 
       vehicleService.create(body)
 
@@ -35,7 +39,7 @@ class VehicleController {
       const { params: { id } } = req
       const foundVehicle = await vehicleService.get(id)
       if (!foundVehicle) {
-        throw new Error('Vehicle not found')
+        throw new NotFoundError(`Vehicle with id: ${id} not found`)
       }
       res.send(foundVehicle)
     } catch (error) {
@@ -50,7 +54,7 @@ class VehicleController {
       const { body } = req
       const foundVehicle = await vehicleService.get(id)
       if (!foundVehicle) {
-        throw new Error('Vehicle not found')
+        throw new NotFoundError(`Vehicle with id: ${id} not found`)
       }
       await vehicleService.update(id, body)
       res.status(200).send()
@@ -65,7 +69,7 @@ class VehicleController {
       const { params: { id } } = req
       const foundVehicle = await vehicleService.get(id)
       if (!foundVehicle) {
-        throw new Error('Vehicle not found')
+        throw new NotFoundError(`Vehicle with id: ${id} not found`)
       }
       await vehicleService.delete(id)
       res.status(200).send()

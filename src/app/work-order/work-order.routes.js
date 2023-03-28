@@ -1,3 +1,5 @@
+'use strict'
+
 const Router = require('express').Router
 const isAuthenticated = require('../../middleware/authentication.middleware')
 const isValidData = require('../../middleware/validation.middleware')

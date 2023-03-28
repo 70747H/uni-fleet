@@ -1,5 +1,8 @@
-const bcrypt = require('bcrypt')
+'use strict'
+
 const roleService = require('./role.service')
+const NotFoundError = require('../../error/not-found.error')
+const BadRequestError = require('../../error/bad-request.error')
 
 class RoleController {
   constructor () {}
@@ -9,7 +12,6 @@ class RoleController {
       const data = await roleService.list()
       res.send(data)
     } catch (error) {
-      console.log('err:: ', error)
       next(error)
     }
   }
@@ -20,13 +22,12 @@ class RoleController {
       const { name } = body
 
       const foundRole = await roleService.getBy({ name })
-      if (foundRole) throw new Error('Role with same name exists')
+      if (foundRole) throw new BadRequestError(`Role with same name: ${name} exists`)
 
       roleService.create(body)
 
       res.status(201).send()
     } catch (error) {
-      console.log('err:: ', error.message)
       next(error)
     }
   }
@@ -36,11 +37,10 @@ class RoleController {
       const { params: { id } } = req
       const foundRole = await roleService.get(id)
       if (!foundRole) {
-        throw new Error('Role not found')
+        throw new NotFoundError(`Role with id: ${id} not found.`)
       }
       res.send(foundRole)
     } catch (error) {
-      console.log('err:: ', error)
       next(error)
     }
   }
@@ -51,12 +51,11 @@ class RoleController {
       const { body } = req
       const foundRole = await roleService.get(id)
       if (!foundRole) {
-        throw new Error('Role not found')
+        throw new NotFoundError(`Role with id: ${id} not found.`)
       }
       await roleService.update(foundRole, body)
       res.status(200).send()
     } catch (error) {
-      console.log('err:: ', error)
       next(error)
     }
   }
@@ -66,12 +65,11 @@ class RoleController {
       const { params: { id } } = req
       const foundRole = await roleService.get(id)
       if (!foundRole) {
-        throw new Error('Role not found')
+        throw new NotFoundError(`Role with id: ${id} not found.`)
       }
       await roleService.delete(id)
       res.status(200).send()
     } catch (error) {
-      console.log('err:: ', error)
       next(error)
     }
   }

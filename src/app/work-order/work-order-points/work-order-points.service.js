@@ -1,3 +1,5 @@
+'use strict'
+
 const WorkOrderPointsModel = require('./work-order-points.model')
 
 class WorkOrderPointsService {

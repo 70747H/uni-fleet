@@ -1,4 +1,9 @@
+'use strict'
+
 const bcrypt = require('bcrypt')
+const NotFoundError = require('../../error/not-found.error')
+const BadRequestError = require('../../error/bad-request.error')
+
 const driverService = require('../shared/user.service')
 
 class DriverController {
@@ -9,7 +14,6 @@ class DriverController {
       const data = await driverService.list()
       res.send(data)
     } catch (error) {
-      console.log('err:: ', error)
       next(error)
     }
   }
@@ -20,7 +24,7 @@ class DriverController {
       const { email, password } = body
 
       const foundDriver = await driverService.getBy({ email })
-      if (foundDriver) throw new Error('Driver with same email exists')
+      if (foundDriver) throw new BadRequestError(`Driver with same email: ${email} exists`)
 
       bcrypt.hash(password, 10).then(function (hash) {
         body.password = hash
@@ -29,7 +33,6 @@ class DriverController {
 
       res.status(201).send()
     } catch (error) {
-      console.log('err:: ', error.message)
       next(error)
     }
   }
@@ -39,11 +42,10 @@ class DriverController {
       const { params: { id } } = req
       const foundDriver = await driverService.get(id)
       if (!foundDriver) {
-        throw new Error('Driver not found')
+        throw new NotFoundError(`Driver with id: ${id} not found.`)
       }
       res.send(foundDriver)
     } catch (error) {
-      console.log('err:: ', error)
       next(error)
     }
   }
@@ -54,12 +56,11 @@ class DriverController {
       const { body } = req
       const foundDriver = await driverService.get(id)
       if (!foundDriver) {
-        throw new Error('Driver not found')
+        throw new NotFoundError(`Driver with id: ${id} not found.`)
       }
       await driverService.update(foundDriver, body)
       res.status(200).send()
     } catch (error) {
-      console.log('err:: ', error)
       next(error)
     }
   }
@@ -69,12 +70,11 @@ class DriverController {
       const { params: { id } } = req
       const foundDriver = await driverService.get(id)
       if (!foundDriver) {
-        throw new Error('Driver not found')
+        throw new NotFoundError(`Driver with id: ${id} not found.`)
       }
       await driverService.delete(id)
       res.status(200).send()
     } catch (error) {
-      console.log('err:: ', error)
       next(error)
     }
   }

@@ -1,3 +1,5 @@
+'use strict'
+
 const TrackerModel = require('./tracker.model')
 
 class TrackerService {
@@ -7,11 +9,11 @@ class TrackerService {
     return TrackerModel.find().populate({
       path: 'workOrder',
       populate: {
-      path: 'driver',
-      model: 'users'
+        path: 'driver',
+        model: 'users'
       }
-  })
-}
+    })
+  }
 
   create (data) {
     return TrackerModel.create(data)

@@ -1,14 +1,10 @@
+'use strict'
+
 const Joi = require('joi')
 
 const createSchema = Joi.object({
   name: Joi.string().required(),
-  permissions: Joi.array()
-  .items
-  (Joi.object({
-     name: Joi.string().required(),
-     action: Joi.string().required(),
-     resource: Joi.string().required()
-    })).min(1)
+  permissions: Joi.array().items(Joi.string().not().empty().trim()).min(1)
 }).unknown(false)
 
 const mongoIdSchema = Joi.object({
@@ -17,13 +13,7 @@ const mongoIdSchema = Joi.object({
 
 const updateSchema = Joi.object({
   name: Joi.string().optional(),
-  permissions: Joi.array()
-  .items
-  (Joi.object({
-     name: Joi.string().required(),
-     action: Joi.string().required(),
-     resource: Joi.string().required()
-    })).min(1)
+  permissions: Joi.array().items(Joi.string().not().empty().trim()).min(1)
 }).unknown(false)
 
 module.exports = {
