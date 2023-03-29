@@ -1,12 +1,13 @@
 'use strict'
 
 const Joi = require('joi')
+const { USER_TYPES } = require('../../constants/general.constant')
 
 const createSchema = Joi.object({
   name: Joi.string().required(),
   email: Joi.string().email().lowercase().required(),
   password: Joi.string().min(5).required(),
-  type: Joi.string().default('operator')
+  type: Joi.string().default(USER_TYPES.OPERATOR)
 }).unknown(false)
 
 const mongoIdSchema = Joi.object({

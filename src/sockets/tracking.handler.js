@@ -1,3 +1,5 @@
+'use strict'
+
 const workOrderPointsService = require('../app/work-order/work-order-points/work-order-points.service')
 const trackerService = require('../app/tracking/tracker.service')
 module.exports = (io, socket) => {

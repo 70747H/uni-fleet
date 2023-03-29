@@ -1,4 +1,6 @@
-const httpStatusCodes = require('./httpStatusCodes')
+'use strict'
+
+const httpStatusCodes = require('../constants/httpStatusCodes')
 const BaseError = require('./base.error')
 
 class ServiceUnavailableError extends BaseError {

@@ -9,7 +9,7 @@ const UserSchema = new mongoose.Schema({
   password: { type: String, required: true },
   age: { type: Number },
   mobile: { type: String },
-  address: { type: { lat: { type: Number }, long: { type: Number }} },
+  address: { type: { lat: { type: Number }, long: { type: Number } } },
   type: { type: String },
   vehicle: { type: Schema.Types.ObjectId, ref: 'vehicles' },
   workOrder: { type: Schema.Types.ObjectId, ref: 'workorders' },

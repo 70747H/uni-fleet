@@ -1,40 +1,19 @@
-// const roleService = require('../app/role/role.service')
+'use strict'
+
 const userService = require('../app/shared/user.service')
+const ForbiddenError = require('../error/forbidden.error')
+const NotFoundError = require('../error/not-found.error')
 
 module.exports = (requirdPermission) => {
   return async (req, res, next) => {
     const { user } = req
 
-    if (!user) next(new Error('Forbidden'))
+    if (!user) next(new ForbiddenError())
 
-    const foundUser = await userService.get(user)
-    if (!foundUser) next(new Error('User not found'))
-
-    const { role: { permissions } } = foundUser
-    const foundMatchingPermission = permissions.find(permission => permission === requirdPermission)
-    if (!foundMatchingPermission) next(new Error('User not permitted'))
+    const foundUser = await userService.get(user, { permissions: requirdPermission })
+    if (!foundUser) next(new NotFoundError('User not found'))
+    if (!foundUser.role) next(new ForbiddenError('User not permitted'))
 
     next()
   }
 }
-
-// module.exports = async (req, res, next) => {
-//   const { user, method, baseUrl, route } = req
-
-//   if (!user) next(new Error('Forbidden'))
-
-//   const foundUser = await userService.get(user)
-//   if (!foundUser) next(new Error('User not found'))
-
-//   const { role } = foundUser
-//   const foundRole = await roleService.get(role)
-//   if (!foundRole) next(new Error('Role not found'))
-
-//   const { permissions } = foundRole
-//   const constructedRoute = `${method}_${baseUrl.substring(1, baseUrl.length)}${route.path}`
-//   const foundMatchingPermission = permissions.filter(permission => permission === constructedRoute)
-//   if (!foundMatchingPermission.length) next(new Error('User not permitted'))
-
-//   req.role = role
-//   next()
-// }

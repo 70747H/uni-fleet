@@ -4,13 +4,14 @@ const bcrypt = require('bcrypt')
 const operatorService = require('../shared/user.service')
 const NotFoundError = require('../../error/not-found.error')
 const BadRequestError = require('../../error/bad-request.error')
+const { USER_TYPES } = require('../../constants/general.constant')
 
 class OperatorController {
   constructor () {}
 
   async list (req, res, next) {
     try {
-      const data = await operatorService.list()
+      const data = await operatorService.list({ type: USER_TYPES.OPERATOR })
       res.send(data)
     } catch (error) {
       next(error)

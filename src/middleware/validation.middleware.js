@@ -1,3 +1,5 @@
+'use strict'
+
 module.exports = (schema, dataPart) => {
   return async (req, res, next) => {
     try {

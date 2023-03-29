@@ -1,3 +1,5 @@
+'use strict'
+
 // const MongoServerError = require('mongodb-core').MongoServerError
 const MongoServerError = require('mongodb').MongoServerError
 

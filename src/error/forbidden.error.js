@@ -3,10 +3,10 @@
 const httpStatusCodes = require('../constants/httpStatusCodes')
 const BaseError = require('./base.error')
 
-class BadRequestError extends BaseError {
+class ForbiddenError extends BaseError {
   constructor (description) {
-    super('Unauthorized', httpStatusCodes.BAD_REQUEST, true, description)
+    super('Forbidden', httpStatusCodes.FORBIDDEN, true, description)
   }
 }
 
-module.exports = BadRequestError
+module.exports = ForbiddenError

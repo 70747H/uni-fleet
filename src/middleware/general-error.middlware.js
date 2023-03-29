@@ -1,3 +1,5 @@
+'use strict'
+
 const BaseError = require('../error/base.error')
 
 module.exports = (err, req, res, next) => {

@@ -6,15 +6,18 @@ class UserService {
   constructor () {}
 
   list (filter) {
-    return userModel.find({ type: 'operator' }).populate('vehicle role').populate({ path: 'workOrder', populate: { path: 'checkPoints' } })
+    return userModel.find(filter).populate('vehicle role').populate({ path: 'workOrder', populate: { path: 'checkPoints' } })
   }
 
   create (data) {
     return userModel.create(data)
   }
 
-  get (id) {
-    return userModel.findById(id).populate('vehicle role').populate({ path: 'workOrder', populate: { path: 'checkPoints' } })
+  get (id, roleMatch) {
+    const query = userModel.findById(id).populate('vehicle').populate({ path: 'workOrder', populate: { path: 'checkPoints' } })
+    if (roleMatch) { query.populate({ path: 'role', match: roleMatch }) }
+
+    return query.exec()
   }
 
   getBy (filter) {
@@ -23,7 +26,7 @@ class UserService {
 
   update (found, data) {
     const { address } = data
-    if (address) data.address = { ...address, ...found.address }
+    if (address) data.address = { ...found.address.toObject(), ...address }
     return userModel.updateOne({ _id: found.id }, { $set: data })
   }
 

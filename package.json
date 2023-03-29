@@ -8,7 +8,9 @@
     "start:dev": "nodemon bin/www",
     "test": "jest --detectOpenHandles",
     "lint": "eslint ./src/*.js",
-    "lint:fix": "eslint --fix ./src/*/*.js"
+    "lint:fix": "eslint --fix ./src/*/*.js",
+    "seed": "node src/seed/index.js",
+    "prepare": "husky install"
   },
   "keywords": [],
   "author": "",
@@ -35,7 +37,9 @@
     "eslint-plugin-n": "^15.6.1",
     "eslint-plugin-promise": "^6.1.1",
     "eslint-plugin-security": "^1.7.1",
+    "husky": "^8.0.0",
     "jest": "^29.5.0",
+    "lint-staged": "^13.2.0",
     "morgan": "^1.10.0",
     "nodemon": "^2.0.21",
     "supertest": "^6.3.3"

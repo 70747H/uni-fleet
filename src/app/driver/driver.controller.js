@@ -3,15 +3,15 @@
 const bcrypt = require('bcrypt')
 const NotFoundError = require('../../error/not-found.error')
 const BadRequestError = require('../../error/bad-request.error')
-
 const driverService = require('../shared/user.service')
+const { USER_TYPES } = require('../../constants/general.constant')
 
 class DriverController {
   constructor () {}
 
   async list (req, res, next) {
     try {
-      const data = await driverService.list()
+      const data = await driverService.list({ type: USER_TYPES.DRIVER })
       res.send(data)
     } catch (error) {
       next(error)

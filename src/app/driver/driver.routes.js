@@ -10,9 +10,9 @@ const { createSchema, mongoIdSchema, updateSchema } = require('./driver.validati
 const router = new Router()
 
 router.get('', isAuthenticated, isAuthorized('GET_driver'), DriverController.list)
-router.post('', isAuthenticated, isAuthorized, isValidData(createSchema, 'body'), DriverController.create)
-router.get('/:id', isAuthenticated, isAuthorized, isValidData(mongoIdSchema, 'params'), DriverController.get)
-router.patch('/:id', isAuthenticated, isAuthorized, isValidData(mongoIdSchema, 'params'), isValidData(updateSchema, 'body'), DriverController.update)
-router.delete('/:id', isAuthenticated, isAuthorized, isValidData(mongoIdSchema, 'params'), DriverController.delete)
+router.post('', isAuthenticated, isAuthorized('POST_driver'), isValidData(createSchema, 'body'), DriverController.create)
+router.get('/:id', isAuthenticated, isAuthorized('GET_driver/:id'), isValidData(mongoIdSchema, 'params'), DriverController.get)
+router.patch('/:id', isAuthenticated, isAuthorized('PATCH_driver/:id'), isValidData(mongoIdSchema, 'params'), isValidData(updateSchema, 'body'), DriverController.update)
+router.delete('/:id', isAuthenticated, isAuthorized('DELETE_driver/:id'), isValidData(mongoIdSchema, 'params'), DriverController.delete)
 
 module.exports = router

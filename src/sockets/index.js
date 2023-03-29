@@ -1,3 +1,5 @@
+'use strict'
+
 const { Server } = require('socket.io')
 // const { setupWorker } = require('@socket.io/sticky')
 // const { createAdapter } = require('@socket.io/cluster-adapter')

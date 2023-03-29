@@ -1,6 +1,7 @@
 'use strict'
 
 const Joi = require('joi')
+const { USER_TYPES } = require('../../constants/general.constant')
 
 const createSchema = Joi.object({
   name: Joi.string().required(),
@@ -12,7 +13,7 @@ const createSchema = Joi.object({
     lat: Joi.number().required(),
     long: Joi.number().required()
   }).required(),
-  type: Joi.string().default('driver'),
+  type: Joi.string().default(USER_TYPES.DRIVER),
   vehicle: Joi.string().hex().length(24).optional(),
   role: Joi.string().hex().length(24).optional()
 }).unknown(false)
