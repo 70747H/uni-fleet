@@ -4,10 +4,10 @@ WORKDIR /usr/src/app
 
 COPY package*.json ./
 
-RUN npm i
+RUN npm ci
 
 COPY . .
 
 EXPOSE 80
 
-CMD ["npm", "run", "start"]
+CMD ["npm", "start"]

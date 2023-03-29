@@ -10,6 +10,7 @@ services:
       REFRESH_TOKEN_TTL: 172800
       DRIVER_API_KEY: f27f9f10-d82b-4ad6-ba9e-58862e3c9b6f
       OPERATOR_API_KEY: 1be8d583-bfdf-46f8-997f-0db783ba2a9c
+    entrypoint: sh -c "node ./src/seed/index.js && node ./bin/www"
     ports:
       - 3001:80
     depends_on:

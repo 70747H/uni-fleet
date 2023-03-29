@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert
+    kompose.version: 1.28.0 (c4137012e)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: fleet-api
+  name: fleet-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: fleet-api
+  strategy: {}
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert
+        kompose.version: 1.28.0 (c4137012e)
+      creationTimestamp: null
+      labels:
+        io.kompose.network/fleet-default: "true"
+        io.kompose.service: fleet-api
+    spec:
+      containers:
+        - command:
+            - sh
+            - -c
+            - node ./src/seed/index.js && node ./bin/www
+          env:
+            - name: DRIVER_API_KEY
+              value: f27f9f10-d82b-4ad6-ba9e-58862e3c9b6f
+            - name: MONGO_DB_URI
+              value: mongodb://mongodb:23017/fleet-db
+            - name: NODE_PORT
+              value: "80"
+            - name: OPERATOR_API_KEY
+              value: 1be8d583-bfdf-46f8-997f-0db783ba2a9c
+            - name: REFRESH_TOKEN_TTL
+              value: "172800"
+            - name: TOKEN_SECRET
+              value: 09f26e402586e2faa8da4c98a35f1b20d6b033c6097befa8be3486a829587fe2f90a832bd3ff9d42710a4da095a2ce285b009f0c3730cd9b8e1af3eb84df6611
+            - name: TOKEN_TTL
+              value: "86400"
+          image: levi47/fleet-api:1.0.1
+          name: fleet-api
+          ports:
+            - containerPort: 80
+          resources: {}
+      restartPolicy: Always
+status: {}
